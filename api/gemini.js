@@ -1,7 +1,7 @@
 // Vercel Serverless Function: /api/gemini
 // Ortam değişkenleri (Vercel > Settings > Environment Variables):
 //   GEMINI_API_KEY  (zorunlu)
-//   GEMINI_MODEL    (opsiyonel, varsayılan: gemini-3.8-flash)
+//   GEMINI_MODEL    (opsiyonel, varsayılan: gemini-2.5-flash)
 
 const LEVELS = {
   1: 'temel (A2-B1): kısa cümleler, sık kullanılan akademik kelimeler',
@@ -40,24 +40,37 @@ module.exports = async (req, res) => {
   const topic = String(b.topic || 'sosyoloji').slice(0, 60);
   const avoid = Array.isArray(b.avoid) ? b.avoid.slice(0, 80).map((s) => String(s).slice(0, 40)) : [];
 
-  const model = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
-  try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: buildPrompt({ mode, stage, topic, count, avoid }) }] }],
-          generationConfig: { responseMimeType: 'application/json', temperature: 0.9 },
-        }),
+  // Yoğunlukta (429/503) kısa aralıklarla tekrar dener; varsa yedek modele geçer.
+  // Opsiyonel ortam değişkeni: GEMINI_FALLBACK_MODEL
+  const models = [process.env.GEMINI_MODEL || 'gemini-2.5-flash'];
+  if (process.env.GEMINI_FALLBACK_MODEL) models.push(process.env.GEMINI_FALLBACK_MODEL);
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: buildPrompt({ mode, stage, topic, count, avoid }) }] }],
+    generationConfig: { responseMimeType: 'application/json', temperature: 0.9 },
+  });
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  let lastErr = 'Gemini hatası';
+
+  for (const model of models) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const r = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body }
+        );
+        const data = await r.json();
+        if (r.ok) {
+          const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
+          return res.status(200).json({ items: JSON.parse(text) });
+        }
+        lastErr = data.error?.message || 'Gemini hatası';
+        if (r.status !== 429 && r.status !== 503) break; // kalıcı hata: tekrar deneme
+        await sleep(1200 * (attempt + 1));
+      } catch (e) {
+        lastErr = String(e.message || e);
+        await sleep(1000);
       }
-    );
-    const data = await r.json();
-    if (!r.ok) return res.status(502).json({ error: data.error?.message || 'Gemini hatası' });
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-    return res.status(200).json({ items: JSON.parse(text) });
-  } catch (e) {
-    return res.status(500).json({ error: String(e.message || e) });
+    }
   }
+  return res.status(502).json({ error: lastErr });
 };
