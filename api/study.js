@@ -17,14 +17,16 @@ const SHAPE = `{
 function buildPrompt(b) {
   const kind = String(b.kind || '');
   let need = 'lesson (kısa ders) ve 3 soru';
-  if (/kelime/i.test(kind)) need = 'vocabulary (12 kelime); lesson kısa bir giriş olsun';
+  if (/ünite/i.test(kind)) need = `lesson (ayrıntılı: kural, YÖKDİL'de nasıl sorulur, sık tuzaklar, örnek cümleler; ` +
+    `seviye A1-A2 ise çok sade Türkçe ve kısa İngilizce örnekler kullan), tam ${b.questionCount || 6} soru ve vocabulary (10 kelime, üniteyle ve sosyal bilimlerle ilgili)`;
+  else if (/kelime/i.test(kind)) need = 'vocabulary (12 kelime); lesson kısa bir giriş olsun';
   else if (/soru|deneme/i.test(kind)) need = `questions (tam ${b.questionCount || 5} adet); lesson boş bırakılabilir`;
   else if (/taktik/i.test(kind)) need = 'strategies (5 taktik) ve lesson (kısa uygulama) ve 3 soru';
   else if (/çeviri|paragraf/i.test(kind)) need = 'lesson (analiz/atölye, örneklerle) ve 3 soru';
 
   const nonce = Math.random().toString(36).slice(2, 8);
   return `Sen YÖKDİL hazırlık öğretmenisin. Alan: ${b.field}. Seviye: ${b.level}. Konu: ${b.topic}. ` +
-    `Çalışma türü: ${kind}. Süre: ${b.minutes}. Zayıf yön: ${b.weakness || 'belirtilmedi'}. ` +
+    `Çalışma türü: ${kind}. ${b.unitDesc ? 'Ünite kapsamı: ' + b.unitDesc + '. ' : ''} Süre: ${b.minutes}. Zayıf yön: ${b.weakness || 'belirtilmedi'}. ` +
     `Bugünün tarihi: ${new Date().toISOString().slice(0, 10)}, varyasyon kodu: ${nonce} (her seferinde farklı içerik üret). ` +
     `Üret: ${need}. Sorular 5 şıklı (A-E) YÖKDİL tarzında özgün olsun, gerçek ÖSYM sorusu kopyalama; ` +
     `answer 0-4 indeks, doğru cevap dengeli dağılsın. Alan sosyal bilimlerse konular sosyoloji, psikoloji, ` +
@@ -86,7 +88,7 @@ module.exports = async (req, res) => {
   const clean = (v, n) => String(v ?? '').slice(0, n);
   const input = {
     field: clean(b.field, 60), level: clean(b.level, 60), topic: clean(b.topic, 80),
-    kind: clean(b.kind, 60), minutes: clean(b.minutes, 20), weakness: clean(b.weakness, 200),
+    kind: clean(b.kind, 60), unitDesc: clean(b.unitDesc, 300), minutes: clean(b.minutes, 20), weakness: clean(b.weakness, 200),
     questionCount: Math.min(Math.max(parseInt(b.questionCount) || 5, 1), 12),
   };
   const prompt = buildPrompt(input);
