@@ -1,123 +1,84 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>YÖKDİL Sosyal Bilimler</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10152d">
+<title>YÖKDİL Akademi | Akıllı Hazırlık Robotu</title>
 <style>
-:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#6b7385;--ac:#3b5bdb;--ok:#2f9e44;--no:#e03131;--bd:#e3e6ee}
-@media(prefers-color-scheme:dark){:root{--bg:#12151c;--card:#1b2030;--tx:#e8ebf3;--mu:#97a0b5;--ac:#748ffc;--bd:#2b3248}}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
-main{max-width:760px;margin:0 auto;padding:16px}
-h1{font-size:1.3rem;margin:.2rem 0}
-.bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.pill{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:4px 12px;font-size:.85rem;color:var(--mu)}
-.tabs{display:flex;gap:6px;margin:12px 0}
-button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:8px 14px}
-button.on,button.pri{background:var(--ac);color:#fff;border-color:var(--ac)}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0}
-.passage{background:var(--bg);border-radius:8px;padding:10px;margin-bottom:8px;font-size:.95rem}
-.opt{display:block;width:100%;text-align:left;margin:6px 0}
-.opt.ok{border-color:var(--ok);background:rgba(47,158,68,.15)}.opt.no{border-color:var(--no);background:rgba(224,49,49,.13)}
-.why{margin-top:8px;color:var(--mu);font-size:.9rem}.tag{font-size:.75rem;color:var(--mu)}
-.w b{color:var(--ac)}.hide{display:none}
-#msg{color:var(--mu);padding:20px;text-align:center}
+:root{--bg:#0b1020;--panel:#141b32;--panel2:#1b2440;--line:#2a3556;--text:#f4f6ff;--muted:#aab5d1;--purple:#9a7bff;--cyan:#54dfd0;--gold:#ffd479;--red:#ff8798;--green:#72e0a1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#22244f 0,transparent 38%),radial-gradient(ellipse at 90% 20%,#103e4a 0,transparent 28%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:linear-gradient(135deg,var(--purple),#6b8cff);color:white;font-weight:750;box-shadow:0 8px 24px #6c63ff24;transition:.18s}button:hover{transform:translateY(-1px);filter:brightness(1.08)}button:disabled{opacity:.55;cursor:wait;transform:none}.ghost{background:#242e4c;box-shadow:none;border:1px solid var(--line)}.outline{background:transparent;border:1px solid var(--line);box-shadow:none}.wrap{max-width:1250px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:25px}.brand{display:flex;align-items:center;gap:13px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#a48aff,#49dfd0);color:#10152d;font-size:24px;font-weight:950;box-shadow:0 8px 30px #5a67ff45}.brand h1{font-size:20px;margin:0;letter-spacing:-.4px}.brand p{margin:4px 0 0;color:var(--muted);font-size:12px}.topright{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.pill{font-size:12px;color:#b8f9e6;border:1px solid #2e746a;background:#153a3b;padding:7px 10px;border-radius:999px}.hero{display:grid;grid-template-columns:1.45fr .75fr;gap:18px;margin-bottom:18px}.hero-main,.hero-side,.panel,.stat{border:1px solid var(--line);background:linear-gradient(145deg,#171f39ed,#11172bed);border-radius:22px;box-shadow:0 18px 50px #0002}.hero-main{padding:30px;position:relative;overflow:hidden}.hero-main:after{content:"YÖKDİL";position:absolute;right:-10px;bottom:-28px;font-size:100px;font-weight:950;color:#ffffff06;pointer-events:none}.eyebrow{color:var(--cyan);font-size:12px;text-transform:uppercase;letter-spacing:1.8px;font-weight:850}.hero h2{font-size:clamp(28px,4vw,43px);line-height:1.12;letter-spacing:-1.4px;margin:12px 0}.hero h2 span{color:var(--cyan)}.hero-main>p{color:var(--muted);max-width:660px;line-height:1.65;margin-bottom:22px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap}.hero-side{padding:23px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}.side-title{font-size:13px;color:var(--muted)}.big-num{font-size:36px;font-weight:900;margin:8px 0 3px}.progress{height:8px;background:#293250;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:99px;transition:width .3s}.small{font-size:12px;color:var(--muted);line-height:1.5}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{padding:16px 18px;border-radius:17px}.stat .label{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:7px}.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:18px}.panel{padding:21px;min-width:0}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.section-head h3{margin:0;font-size:17px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.field{margin:0 0 15px}.field label{display:block;color:#c9d2eb;font-size:12px;font-weight:750;margin-bottom:7px}.field select,.field input,.field textarea{width:100%;background:#0d1429;border:1px solid #303b5c;border-radius:11px;padding:11px 12px;color:var(--text);outline:none}.field select:focus,.field input:focus,.field textarea:focus{border-color:var(--purple)}.field textarea{resize:vertical;min-height:70px}.field input::placeholder,.field textarea::placeholder{color:#677493}.wide{width:100%}.divider{height:1px;background:var(--line);margin:18px 0}.quick{display:flex;flex-wrap:wrap;gap:7px}.quick button{padding:8px 10px;font-size:12px;border-radius:9px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.tab{background:#1a2340;color:#bdc8e4;border:1px solid #2d385a;box-shadow:none;padding:9px 13px;font-size:13px}.tab.active{background:#493b80;border-color:#8e78ef;color:#fff}.content{min-height:460px}.welcome{min-height:430px;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}.welcome .emoji{font-size:48px}.welcome h3{font-size:22px;margin:14px 0 8px}.welcome p{max-width:480px;color:var(--muted);line-height:1.65}.output h2,.output h3{line-height:1.3}.output h2{font-size:24px}.output h3{font-size:17px;margin-top:22px}.output p,.output li{line-height:1.72;color:#d5def4}.output ul,.output ol{padding-left:23px}.output code{background:#0b1226;border:1px solid var(--line);padding:2px 5px;border-radius:5px}.output blockquote{border-left:3px solid var(--cyan);margin:15px 0;padding:8px 15px;background:#122b35;border-radius:0 10px 10px 0;color:#d7fff6}.q-card{padding:17px;background:#11182e;border:1px solid #2b3658;border-radius:15px;margin:13px 0}.q-top{display:flex;gap:8px;align-items:center;color:var(--cyan);font-size:11px;font-weight:850;text-transform:uppercase}.q-card h4{font-size:15px;line-height:1.6;margin:10px 0}.option{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #303a59;border-radius:10px;margin:7px 0;color:#dbe2f6;cursor:pointer}.option:hover{border-color:#8c79ec}.option input{margin-top:4px;accent-color:var(--purple)}.feedback{font-size:13px;margin-top:10px;padding:10px;border-radius:9px;display:none;line-height:1.55}.feedback.good{display:block;background:#14362b;color:#9cf0bd}.feedback.bad{display:block;background:#3b202c;color:#ffb6c1}.muted{color:var(--muted)}.notice{padding:12px 14px;border-radius:12px;background:#342c1b;border:1px solid #69582f;color:#f9dda1;font-size:12px;line-height:1.6;margin-top:13px}.loader{display:flex;gap:11px;align-items:center;color:var(--muted);padding:30px}.spinner{width:20px;height:20px;border:2px solid #394465;border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.history-item{padding:10px 11px;border-radius:10px;background:#10172b;border:1px solid #293451;margin:8px 0;font-size:12px;line-height:1.5;cursor:pointer}.history-item:hover{border-color:var(--purple)}.foot{text-align:center;color:#7582a4;font-size:11px;padding:25px 10px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:12px 16px;border-radius:12px;background:#edf5ff;color:#10152d;font-size:13px;font-weight:750;box-shadow:0 10px 35px #0005;display:none;z-index:9}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.top{align-items:flex-start;flex-direction:column}.topright{width:100%}.wrap{padding:14px}.hero-main{padding:23px}.hero-main:after{font-size:65px}.content{min-height:350px}}
 </style>
 </head>
 <body>
-<main>
-<h1>📚 YÖKDİL · Sosyal Bilimler</h1>
-<div class="bar"><span class="pill" id="st"></span><span class="pill" id="acc"></span><span class="pill" id="sk"></span></div>
-<div class="tabs">
-  <button id="t1" class="on" onclick="tab(1)">Bugün</button>
-  <button id="t2" onclick="tab(2)">Hatalarım</button>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><div class="logo">Y</div><div><h1>YÖKDİL <span style="color:var(--cyan)">AKADEMİ</span></h1><p>Yapay zekâ destekli kişisel sınav hazırlık robotu</p></div></div>
+ <div class="topright"><span class="pill">● Gemini bağlantısı hazır olduğunda aktif</span><button class="ghost" id="clearHistory">Geçmişi temizle</button></div>
+</header>
+<section class="hero">
+ <div class="hero-main"><div class="eyebrow">Kişisel çalışma laboratuvarın</div><h2>Her gün biraz daha<br><span>YÖKDİL’e yakın.</span></h2><p>Sosyal bilimler odaklı kelime, akademik okuma, dil bilgisi, çeviri ve sınav taktiklerini Türkçe açıklamalarla çalış. Her istekte yeni içerik üret; yanlışlarını açıklamalarıyla öğren.</p><div class="hero-actions"><button id="heroLesson">✦ Bugünün dersini oluştur</button><button class="ghost" id="heroQuiz">⚡ Mini deneme başlat</button></div></div>
+ <div class="hero-side"><div><div class="side-title">Çalışma yolculuğun</div><div class="big-num"><span id="doneCount">0</span> <span style="font-size:15px;color:var(--muted);font-weight:600">etkinlik</span></div><div class="progress"><span id="progressBar"></span></div><div class="small" id="progressText">İlk etkinliğini tamamlayarak başla.</div></div><div><div class="side-title">Bugünün odağı</div><h3 style="margin:8px 0">Academic English</h3><div class="small">Kelime • bağlam • çıkarım • akademik metin</div></div></div>
+</section>
+<section class="stats">
+ <div class="stat"><div class="label">Tamamlanan çalışmalar</div><strong id="statDone">0</strong></div>
+ <div class="stat"><div class="label">Doğru yanıt</div><strong id="statCorrect">0</strong></div>
+ <div class="stat"><div class="label">Yanlış yanıt</div><strong id="statWrong">0</strong></div>
+ <div class="stat"><div class="label">Başarı oranı</div><strong id="statRate">%0</strong></div>
+</section>
+<div class="layout">
+ <aside class="panel">
+  <div class="section-head"><div><h3>Çalışma ayarları</h3><p>İçeriğini kendine göre şekillendir</p></div><span>⚙️</span></div>
+  <div class="field"><label for="field">Alan / sınav odağı</label><select id="field"><option value="Sosyal Bilimler">YÖKDİL Sosyal Bilimler</option><option value="Sağlık Bilimleri">YÖKDİL Sağlık Bilimleri</option><option value="Fen Bilimleri">YÖKDİL Fen Bilimleri</option><option value="Genel akademik İngilizce">Genel akademik İngilizce</option></select></div>
+  <div class="field"><label for="level">Seviye</label><select id="level"><option>A2-B1 / Temel</option><option selected>B1-B2 / Orta</option><option>B2-C1 / İleri</option><option>C1 / Sınav odaklı ileri</option></select></div>
+  <div class="field"><label for="topic">Konu</label><select id="topic"><option value="Günün karma çalışması">Günün karma çalışması</option><option>Akademik kelime ve eş anlam</option><option>Bağlaçlar ve geçiş ifadeleri</option><option>Relative clauses</option><option>Passive voice</option><option>Tense ve fiil yapıları</option><option>İsim cümlecikleri (noun clauses)</option><option>Gerund ve infinitive</option><option>Prepositions</option><option>Cümle tamamlama</option><option>İngilizceden Türkçeye çeviri</option><option>Türkçeden İngilizceye çeviri</option><option>Paragraf tamamlama</option><option>Okuduğunu anlama ve çıkarım</option><option>Restatement / yakın anlam</option><option>Kelime bilgisi: bağlamdan anlam</option><option>YÖKDİL sınav taktikleri</option></select></div>
+  <div class="field"><label for="kind">Etkinlik türü</label><select id="kind"><option value="Ders anlatımı + örnekler">Ders anlatımı + örnekler</option><option value="5 soruluk mini test">5 soruluk mini test</option><option value="10 soruluk deneme">10 soruluk deneme</option><option value="Kelime kartları">Kelime kartları</option><option value="Akademik paragraf analizi">Akademik paragraf analizi</option><option value="Sınav taktiği ve uygulama">Sınav taktiği ve uygulama</option><option value="Çeviri atölyesi">Çeviri atölyesi</option></select></div>
+  <div class="field"><label for="minutes">Çalışma süresi</label><select id="minutes"><option>10 dakika</option><option selected>20 dakika</option><option>30 dakika</option><option>45 dakika</option></select></div>
+  <div class="field"><label for="weakness">Özellikle çalışmak istediğin konu (isteğe bağlı)</label><textarea id="weakness" placeholder="Örn. despite / although farkı, uzun cümleleri çözümleme..."></textarea></div>
+  <button class="wide" id="generate">✦ Kişisel çalışmayı üret</button>
+  <div class="divider"></div>
+  <div class="section-head"><div><h3>Hızlı başlat</h3><p>Tek tıkla pratik</p></div></div>
+  <div class="quick"><button class="ghost" data-quick="Kelime bilgisi: bağlamdan anlam">Kelime</button><button class="ghost" data-quick="Bağlaçlar ve geçiş ifadeleri">Bağlaç</button><button class="ghost" data-quick="Okuduğunu anlama ve çıkarım">Paragraf</button><button class="ghost" data-quick="İngilizceden Türkçeye çeviri">Çeviri</button></div>
+  <div class="notice">API anahtarını HTML dosyasına yazma. Gemini anahtarı Vercel ortam değişkeninde tutulur; tarayıcıya gönderilmez.</div>
+  <div class="divider"></div><div class="section-head"><div><h3>Son çalışmalar</h3><p>Bu cihazda saklanır</p></div></div><div id="history"><p class="small">Henüz çalışma yok.</p></div>
+ </aside>
+ <main class="panel">
+  <div class="section-head"><div><h3 id="mainTitle">Çalışma alanı</h3><p id="mainSubtitle">Ders, test veya sınav taktiği oluştur.</p></div><button class="outline" id="refresh" title="Yeni içerik üret">↻ Yenile</button></div>
+  <div class="tabs"><button class="tab active" data-tab="study">Ders & içerik</button><button class="tab" data-tab="practice">Soru çöz</button><button class="tab" data-tab="vocab">Kelime defteri</button><button class="tab" data-tab="strategy">Sınav taktikleri</button></div>
+  <div class="content" id="content"><div class="welcome"><div><div class="emoji">📚</div><h3>Bugünkü çalışmanı başlat</h3><p>Sol taraftan alanını, seviyeni ve konunu seç. Robot; Türkçe konu anlatımı, özgün örnekler, sınav tipi sorular ve cevap açıklamaları hazırlasın.</p><button id="welcomeStart">İlk çalışmayı oluştur</button></div></div></div>
+ </main>
 </div>
-<div id="msg"></div>
-<section id="p1"><div id="words"></div><div id="quiz"></div>
-  <button class="pri" onclick="newSet()">+ Yeni soru seti</button></section>
-<section id="p2" class="hide"><div id="wrong"></div></section>
-</main>
+<div class="foot">YÖKDİL Akademi • Öğrenme amaçlı yapay zekâ destekli yardımcı • Resmî ÖSYM/YÖK ürünü değildir.</div>
+</div><div class="toast" id="toast"></div>
 <script>
-const TOPICS=['sosyoloji','psikoloji','siyaset bilimi','uluslararası ilişkiler','iktisat','eğitim bilimleri','tarih','felsefe','antropoloji','hukuk','iletişim','coğrafya','işletme','kamu yönetimi'];
-const STAGES={1:'Seviye 1 · Temel',2:'Seviye 2 · Orta',3:'Seviye 3 · İleri (65+)'};
 const $=id=>document.getElementById(id);
-const today=()=>new Date().toISOString().slice(0,10);
-const dayNo=()=>Math.floor(Date.now()/864e5);
-let S=JSON.parse(localStorage.getItem('yd')||'null')||{stage:1,hist:[],wrong:[],seen:[],streak:0,last:'',day:'',words:[],qs:[]};
-const save=()=>localStorage.setItem('yd',JSON.stringify(S));
-const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-async function api(body){
-  for(let i=0;i<2;i++){
-    const r=await fetch('/api/gemini',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const d=await r.json();
-    if(r.ok) return d.items;
-    if(r.status===429&&d.retry&&d.retry<=70&&i==0){
-      for(let s=d.retry+2;s>0;s--){$('msg').textContent='Gemini ücretsiz kotası doldu, '+s+' sn sonra otomatik denenecek…';await sleep(1000);}
-      continue;
-    }
-    if(r.status===429) throw new Error('Gemini ücretsiz günlük/dakikalık kotası doldu. Biraz bekleyip sayfayı yenile.');
-    throw new Error(d.error||'Hata');
-  }
-}
-function stats(){
-  const h=S.hist.slice(-30),a=h.length?Math.round(100*h.filter(x=>x).length/h.length):0;
-  $('st').textContent=STAGES[S.stage];$('acc').textContent='Son 30: %'+a;$('sk').textContent='🔥 '+S.streak+' gün';
-  if(h.length>=30&&a>=75&&S.stage<3){S.stage++;S.hist=[];save();stats();}
-  if(h.length>=30&&a<40&&S.stage>1){S.stage--;S.hist=[];save();stats();}
-}
-function tab(n){$('p1').classList.toggle('hide',n!=1);$('p2').classList.toggle('hide',n!=2);
-  $('t1').className=n==1?'on':'';$('t2').className=n==2?'on':'';if(n==2)renderWrong();}
-
-async function load(){
-  if(S.last!==today()){ // yeni gün: seri hesapla
-    const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
-    S.streak=S.last===y?S.streak+1:1;S.last=today();save();
-  }
-  stats();
-  if(S.day!==today()||!S.qs.length){
-    $('msg').textContent='Bugünün içeriği hazırlanıyor…';
-    const topic=TOPICS[dayNo()%TOPICS.length];
-    try{
-      const d=await api({mode:'daily',stage:S.stage,topic,count:10,avoid:S.seen.slice(-60)});
-      const w=d.words||[],q=d.questions||[];
-      S.day=today();S.topic=topic;S.words=w;S.qs=q;S.seen.push(...w.map(x=>x.en));save();
-    }catch(e){$('msg').textContent='⚠️ '+e.message;return;}
-  }
-  $('msg').textContent='';render();
-}
-function render(){
-  $('words').innerHTML='<div class="card"><b>Günün konusu: '+esc(S.topic)+'</b> — kelimeler'+
-    S.words.map(w=>'<div class="w"><b>'+esc(w.en)+'</b> — '+esc(w.tr)+'<div class="tag">'+esc(w.example)+'</div></div>').join('')+'</div>';
-  $('quiz').innerHTML=S.qs.map((q,i)=>qHtml(q,i,'q')).join('');
-}
-function qHtml(q,i,pre){
-  return '<div class="card" id="'+pre+i+'"><div class="tag">'+(i+1)+' · '+esc(q.type)+'</div>'+
-    (q.passage?'<div class="passage">'+esc(q.passage)+'</div>':'')+'<div>'+esc(q.q)+'</div>'+
-    (q.options||[]).map((o,j)=>'<button class="opt" onclick="ans(\''+pre+'\','+i+','+j+')">'+'ABCDE'[j]+') '+esc(o)+'</button>').join('')+
-    '<div class="why hide"></div></div>';
-}
-function ans(pre,i,j){
-  const q=(pre=='q'?S.qs:S.wrong)[i],c=$(pre+i);if(c.dataset.done)return;c.dataset.done=1;
-  const bs=c.querySelectorAll('.opt');bs[q.answer].classList.add('ok');
-  const right=j===q.answer;if(!right)bs[j].classList.add('no');
-  const w=c.querySelector('.why');w.textContent=(right?'✅ ':'❌ ')+(q.why||'');w.classList.remove('hide');
-  if(pre=='q'){S.hist.push(right);
-    if(!right&&!S.wrong.some(x=>x.q===q.q))S.wrong.push(q);}
-  else if(right){S.wrong.splice(i,1);}
-  save();stats();
-}
-async function newSet(){
-  $('msg').textContent='Yeni set hazırlanıyor…';
-  try{const t=TOPICS[(dayNo()+Math.floor(Math.random()*13)+1)%TOPICS.length];
-    S.qs=await api({mode:'quiz',stage:S.stage,topic:t,count:10});S.topic=t;save();render();$('msg').textContent='';
-  }catch(e){$('msg').textContent='⚠️ '+e.message;}
-}
-function renderWrong(){
-  $('wrong').innerHTML=S.wrong.length?S.wrong.map((q,i)=>qHtml(q,i,'w')).join(''):'<div class="card">Yanlış listen boş 🎉</div>';
-}
-load();
+let activeTab='study', latestData=null, busy=false;
+const KEY='yokdil_academi_v1';
+let stats=JSON.parse(localStorage.getItem(KEY+'_stats')||'{"done":0,"correct":0,"wrong":0}');
+let history=JSON.parse(localStorage.getItem(KEY+'_history')||'[]');
+function save(){localStorage.setItem(KEY+'_stats',JSON.stringify(stats));localStorage.setItem(KEY+'_history',JSON.stringify(history));renderStats();renderHistory()}
+function renderStats(){ $('doneCount').textContent=stats.done;$('statDone').textContent=stats.done;$('statCorrect').textContent=stats.correct;$('statWrong').textContent=stats.wrong;let total=stats.correct+stats.wrong;let rate=total?Math.round(stats.correct/total*100):0;$('statRate').textContent='%'+rate;$('progressBar').style.width=Math.min(100,stats.done*8)+'%';$('progressText').textContent=stats.done?`${stats.done} çalışma tamamlandı • ${rate}% soru başarısı`:'İlk etkinliğini tamamlayarak başla.'}
+function renderHistory(){if(!history.length){$('history').innerHTML='<p class="small">Henüz çalışma yok.</p>';return}$('history').innerHTML=history.slice(0,5).map((h,i)=>`<div class="history-item" data-hist="${i}"><strong>${esc(h.title)}</strong><br><span class="muted">${esc(h.date)}</span></div>`).join('');document.querySelectorAll('[data-hist]').forEach(el=>el.onclick=()=>{let h=history[+el.dataset.hist];latestData=h.data;showData(h.data,h.title)})}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(s){$('toast').textContent=s;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',3000)}
+function settings(){return {field:$('field').value,level:$('level').value,topic:$('topic').value,kind:$('kind').value,minutes:$('minutes').value,weakness:$('weakness').value,tab:activeTab}}
+function setLoading(on){busy=on;['generate','heroLesson','heroQuiz','refresh','welcomeStart'].forEach(id=>{if($(id))$(id).disabled=on});if(on)$('content').innerHTML='<div class="loader"><div class="spinner"></div><div><strong>Çalışman hazırlanıyor…</strong><br><span class="small">Yeni örnekler ve açıklamalar üretiliyor.</span></div></div>'}
+async function generate(overrides={}){if(busy)return;let cfg={...settings(),...overrides};if(cfg.kind==='5 soruluk mini test')cfg.questionCount=5;if(cfg.kind==='10 soruluk deneme')cfg.questionCount=10;setLoading(true);$('mainTitle').textContent='İçerik hazırlanıyor';$('mainSubtitle').textContent=`${cfg.field} • ${cfg.topic}`;
+try{const res=await fetch('/api/study',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cfg)});let data=await res.json();if(!res.ok)throw new Error(data.error||'İstek tamamlanamadı.');latestData=data;stats.done++;history.unshift({title:data.title||cfg.topic,date:new Date().toLocaleString('tr-TR'),data});history=history.slice(0,12);save();showData(data,data.title||cfg.topic);toast('Yeni çalışma hazır!')}catch(e){$('content').innerHTML=`<div class="q-card"><h3>Bağlantı kurulamadı</h3><p>${esc(e.message)}</p><p class="muted">Vercel'e dağıttıysan Settings → Environment Variables bölümünde GEMINI_API_KEY tanımlı mı kontrol et. Yerelde doğrudan index.html açmak yerine Vercel geliştirme sunucusu kullan.</p><button class="ghost" onclick="generate()">Tekrar dene</button></div>`}finally{setLoading(false)}}
+function md(s){let t=esc(s||'');t=t.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h2>$1</h2>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`(.*?)`/g,'<code>$1</code>').replace(/^> (.*)$/gm,'<blockquote>$1</blockquote>').replace(/^\s*[-*] (.*)$/gm,'<li>$1</li>').replace(/(?:<li>.*<\/li>\n?)+/g,m=>'<ul>'+m+'</ul>').replace(/\n{2,}/g,'</p><p>').replace(/\n/g,'<br>');return '<p>'+t+'</p>'}
+function showData(data,title){$('mainTitle').textContent=title;$('mainSubtitle').textContent=`${data.field||$('field').value} • ${data.topic||$('topic').value}`;if(activeTab==='practice'&&data.questions)renderQuestions(data);else if(activeTab==='vocab'&&data.vocabulary)renderVocab(data);else if(activeTab==='strategy'&&data.strategies)renderStrategies(data);else $('content').innerHTML=`<div class="output">${md(data.lesson||data.content||'İçerik üretildi.')}${data.questions?.length?'<div class="divider"></div><button id="toQuestions">Soruları çöz →</button>':''}<div class="divider"></div><div class="small">Bu çalışma yapay zekâ tarafından oluşturulmuştur. Örnekleri kendi kaynaklarınla karşılaştırarak kullan.</div></div>`;if($('toQuestions'))$('toQuestions').onclick=()=>{activeTab='practice';setTab();renderQuestions(data)}}
+function renderQuestions(data){let qs=data.questions||[];if(!qs.length){$('content').innerHTML='<p class="muted">Bu içerikte soru bulunmuyor. Yeni bir mini test üret.</p>';return}$('content').innerHTML=`<div class="output"><p class="muted">Her soruda bir seçenek işaretle, ardından yanıtını kontrol et. Açıklamaları okumayı unutma.</p>${qs.map((q,i)=>`<div class="q-card" id="q${i}"><div class="q-top">Soru ${i+1} / ${qs.length}</div><h4>${esc(q.question)}</h4>${(q.options||[]).map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}"><span><strong>${String.fromCharCode(65+j)}.</strong> ${esc(o)}</span></label>`).join('')}<button class="ghost" onclick="checkAnswer(${i})">Yanıtı kontrol et</button><div class="feedback" id="fb${i}"></div></div>`).join('')}<button id="scoreBtn">Test sonucunu hesapla</button><div id="scoreOut" class="q-card" style="display:none"></div></div>`}
+let answered={};
+window.checkAnswer=function(i){let q=latestData.questions[i],picked=document.querySelector(`input[name="q${i}"]:checked`),fb=$('fb'+i);if(!picked){toast('Önce bir seçenek işaretle.');return}let chosen=+picked.value,correct=Number(q.answer);let good=chosen===correct;fb.className='feedback '+(good?'good':'bad');fb.style.display='block';fb.innerHTML=(good?'✓ Doğru! ':'✕ Doğru cevap: '+String.fromCharCode(65+correct)+'. ')+esc(q.explanation||'Cevabı cümle bağlamına göre değerlendir.');if(!answered[i]){stats[good?'correct':'wrong']++;answered[i]=true;save()}};
+function renderVocab(data){let list=data.vocabulary||[];$('content').innerHTML=`<div class="output"><p class="muted">Kelimeyi cümle içinde öğren; anlamını ve eş anlamlılarını birlikte tekrar et.</p>${list.map((v,i)=>`<div class="q-card"><div class="q-top">Kelime ${i+1}</div><h3 style="margin:8px 0">${esc(v.word)} <span class="muted">— ${esc(v.pos||'')}</span></h3><p><strong>Türkçe:</strong> ${esc(v.meaning)}</p><p><strong>Örnek:</strong> ${esc(v.example)}</p><p><strong>Çeviri:</strong> ${esc(v.translation)}</p><p><strong>Eş anlam / yakın anlam:</strong> ${esc(v.synonyms||'—')}</p></div>`).join('')||md(data.lesson||'Kelime listesi bulunamadı.')}</div>`}
+function renderStrategies(data){$('content').innerHTML=`<div class="output">${md(data.lesson||data.content||'')}${(data.strategies||[]).map((s,i)=>`<div class="q-card"><div class="q-top">Taktik ${i+1}</div><h3>${esc(s.title)}</h3><p>${esc(s.detail)}</p>${s.example?`<blockquote>${esc(s.example)}</blockquote>`:''}</div>`).join('')}</div>`}
+function setTab(){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));if(latestData)showData(latestData,latestData.title||'Çalışma');else if(activeTab!=='study')generate({kind:activeTab==='practice'?'5 soruluk mini test':activeTab==='vocab'?'Kelime kartları':'Sınav taktiği ve uygulama'})}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;setTab()});
+$('generate').onclick=()=>generate();$('heroLesson').onclick=()=>generate({kind:'Ders anlatımı + örnekler',topic:'Günün karma çalışması'});$('heroQuiz').onclick=()=>generate({kind:'5 soruluk mini test'});$('welcomeStart').onclick=()=>generate();$('refresh').onclick=()=>generate();$('clearHistory').onclick=()=>{if(confirm('Bu cihazdaki çalışma geçmişi ve istatistikler silinsin mi?')){history=[];stats={done:0,correct:0,wrong:0};answered={};save();toast('Geçmiş temizlendi.')}};document.querySelectorAll('[data-quick]').forEach(b=>b.onclick=()=>generate({topic:b.dataset.quick}));$('scoreBtn')?.addEventListener('click',()=>{});
+document.addEventListener('click',e=>{if(e.target&&e.target.id==='scoreBtn'){let total=latestData?.questions?.length||0,correct=0;(latestData.questions||[]).forEach((q,i)=>{let p=document.querySelector(`input[name="q${i}"]:checked`);if(p&&+p.value===+q.answer)correct++});let out=$('scoreOut');out.style.display='block';out.innerHTML=`<h3>Sonucun: ${correct} / ${total}</h3><p>${total?Math.round(correct/total*100):0}% doğru. Yanlış yaptığın soruların açıklamalarını tekrar incele.</p>`}});
+renderStats();renderHistory();
 </script>
 </body>
 </html>
