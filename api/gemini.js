@@ -1,7 +1,7 @@
 // Vercel Serverless Function: /api/gemini
 // Ortam değişkenleri (Vercel > Settings > Environment Variables):
 //   GEMINI_API_KEY  (zorunlu)
-//   GEMINI_MODEL    (opsiyonel, varsayılan: gemini-2.5-flash)
+//   GEMINI_MODEL    (opsiyonel, varsayılan: gemini-3.8-flash)
 
 const LEVELS = {
   1: 'temel (A2-B1): kısa cümleler, sık kullanılan akademik kelimeler',
@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
 
   // Yoğunlukta (429/503) kısa aralıklarla tekrar dener; varsa yedek modele geçer.
   // Opsiyonel ortam değişkeni: GEMINI_FALLBACK_MODEL
-  const models = [process.env.GEMINI_MODEL || 'gemini-2.5-flash'];
+  const models = [process.env.GEMINI_MODEL || 'gemini-3.8-flash'];
   if (process.env.GEMINI_FALLBACK_MODEL) models.push(process.env.GEMINI_FALLBACK_MODEL);
   const body = JSON.stringify({
     contents: [{ parts: [{ text: buildPrompt({ mode, stage, topic, count, avoid }) }] }],
