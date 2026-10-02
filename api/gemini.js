@@ -15,6 +15,14 @@ const TYPES =
 function buildPrompt({ mode, stage, topic, count, avoid }) {
   const lvl = LEVELS[stage] || LEVELS[1];
   const skip = avoid && avoid.length ? ` Şu kelimeleri tekrar etme: ${avoid.join(', ')}.` : '';
+  if (mode === 'daily') {
+    return `Sen YÖKDİL Sosyal Bilimler hazırlık uzmanısın. Seviye: ${lvl}. Konu: ${topic}. İki parça üret. ` +
+      `(1) Bu konuda sınavda sık çıkan 10 akademik İngilizce kelime/kalıp.${skip} ` +
+      `(2) ${count} adet ÖZGÜN, YÖKDİL tarzı, 5 şıklı çoktan seçmeli soru; türleri karışık: ${TYPES}. ` +
+      `Gerçek ÖSYM sorularını kopyalama. Doğru cevap şıklara dengeli dağılsın. ` +
+      `Sadece JSON nesne döndür: {"words":[{"en":"","tr":"","example":""}],` +
+      `"questions":[{"type":"","passage":"(yalnızca okuma/paragraf sorularında, yoksa boş)","q":"","options":["","","","",""],"answer":0,"why":"Türkçe kısa açıklama"}]} — answer 0-4 arası indeks.`;
+  }
   if (mode === 'words') {
     return `Sen YÖKDİL Sosyal Bilimler hazırlık uzmanısın. Seviye: ${lvl}. Konu: ${topic}. ` +
       `Bu konuda sınavda sık çıkan ${count} akademik İngilizce kelime/kalıp seç.${skip} ` +
@@ -34,7 +42,7 @@ module.exports = async (req, res) => {
   if (!key) return res.status(500).json({ error: 'GEMINI_API_KEY tanımlı değil' });
 
   const b = req.body || {};
-  const mode = b.mode === 'words' ? 'words' : 'quiz';
+  const mode = ['words', 'daily'].includes(b.mode) ? b.mode : 'quiz';
   const stage = [1, 2, 3].includes(b.stage) ? b.stage : 1;
   const count = Math.min(Math.max(parseInt(b.count) || 10, 1), 15);
   const topic = String(b.topic || 'sosyoloji').slice(0, 60);
@@ -52,7 +60,7 @@ module.exports = async (req, res) => {
   let lastErr = 'Gemini hatası';
 
   for (const model of models) {
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const r = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
@@ -64,8 +72,12 @@ module.exports = async (req, res) => {
           return res.status(200).json({ items: JSON.parse(text) });
         }
         lastErr = data.error?.message || 'Gemini hatası';
-        if (r.status !== 429 && r.status !== 503) break; // kalıcı hata: tekrar deneme
-        await sleep(1200 * (attempt + 1));
+        if (r.status === 429) { // kota: tekrar denemek kotayı daha da yer, süreyi istemciye bildir
+          const m = /retry in ([\d.]+)s/i.exec(lastErr);
+          return res.status(429).json({ error: lastErr, retry: m ? Math.ceil(parseFloat(m[1])) : 30 });
+        }
+        if (r.status !== 503) break; // kalıcı hata
+        await sleep(1500);
       } catch (e) {
         lastErr = String(e.message || e);
         await sleep(1000);
