@@ -1,7 +1,7 @@
 // Vercel Serverless Function: /api/gemini
 // Ortam değişkenleri (Vercel > Settings > Environment Variables):
 //   GEMINI_API_KEY  (zorunlu)
-//   GEMINI_MODEL    (opsiyonel, varsayılan: gemini-2.5-flash)
+//   GEMINI_MODEL    (opsiyonel, varsayılan: gemini-3.8-flash)
 
 const LEVELS = {
   1: 'temel (A2-B1): kısa cümleler, sık kullanılan akademik kelimeler',
